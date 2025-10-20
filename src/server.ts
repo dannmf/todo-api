@@ -5,7 +5,7 @@ import prisma from './config/database.js';
 const PORT = process.env.PORT || 3000;
 
 // Função para iniciar o servidor
-const startServer = async () => {
+const startServer = async (): Promise<void> => {
   try {
     // Testa a conexão com o banco de dados
     await prisma.$connect();
@@ -24,7 +24,7 @@ const startServer = async () => {
 };
 
 // Tratamento de sinais de encerramento
-const gracefulShutdown = async (signal) => {
+const gracefulShutdown = async (signal: string): Promise<void> => {
   console.log(`\n${signal} recebido. Encerrando graciosamente...`);
 
   try {

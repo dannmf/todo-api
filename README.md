@@ -1,27 +1,50 @@
 # Todo API
 
-API RESTful para gerenciamento de tarefas (Todo List) construída com Node.js, Express, Prisma e Zod.
+API RESTful para gerenciamento de tarefas (Todo List) construída com Node.js, Express, Prisma e Zod em TypeScript.
 
 ## 📋 Tecnologias
 
+- **TypeScript** - Superset JavaScript com tipagem estática
 - **Node.js** - Runtime JavaScript
 - **Express** - Framework web
 - **Prisma** - ORM para banco de dados
-- **Zod** - Validação de schemas
+- **Zod** - Validação de schemas com inferência de tipos
 - **SQLite** - Banco de dados (pode ser facilmente trocado)
+- **tsx** - TypeScript executor para desenvolvimento
 
 ## 🏗️ Arquitetura
 
 ```
 src/
 ├── config/          # Configurações (database)
-├── controllers/     # Lógica de negócio
-├── middlewares/     # Middlewares (validação, erros)
+├── controllers/     # Lógica de negócio com tipos inferidos
+├── middlewares/     # Middlewares type-safe
 ├── routes/          # Definição de rotas
-├── validators/      # Schemas de validação Zod
-├── app.js          # Configuração do Express
-└── server.js       # Inicialização do servidor
+├── types/           # Tipos e interfaces TypeScript
+├── validators/      # Schemas Zod + inferência de tipos
+├── app.ts          # Configuração do Express
+└── server.ts       # Inicialização do servidor
 ```
+
+### Inferência de Tipos com Zod
+
+A API aproveita o poder do Zod para gerar automaticamente tipos TypeScript a partir dos schemas de validação:
+
+```typescript
+// Schema Zod
+export const createTodoSchema = z.object({
+  title: z.string().min(1).max(255),
+  description: z.string().max(1000).optional().nullable(),
+  isDone: z.boolean().default(false),
+  reminder: z.string().datetime().optional().nullable(),
+});
+
+// Tipos TypeScript inferidos automaticamente
+export type CreateTodoInput = z.infer<typeof createTodoSchema>;
+export type CreateTodoBody = z.input<typeof createTodoSchema>;
+```
+
+Isso garante que seus tipos TypeScript estejam sempre sincronizados com suas validações!
 
 ## 🚀 Instalação
 
@@ -307,16 +330,57 @@ A API retorna erros no seguinte formato:
 ## 🛠️ Comandos Úteis
 
 ```bash
-# Desenvolvimento
+# Desenvolvimento (com watch mode)
 npm run dev
 
-# Produção
-npm start
+# Build do TypeScript
+npm run build
+
+# Verificação de tipos
+npm run type-check
+
+# Produção (requer build primeiro)
+npm run build && npm start
 
 # Prisma
 npm run prisma:migrate      # Executar migrações
 npm run prisma:studio       # Interface visual do banco
 npm run prisma:generate     # Gerar Prisma Client
+```
+
+## 💡 Exemplos de Uso com TypeScript
+
+### Controllers com Tipos Inferidos
+
+```typescript
+import type { CreateTodoInput, TodoIdParams } from '../validators/todo.validator.js';
+
+// Os tipos são automaticamente inferidos do Zod
+create: AsyncRequestHandler = async (
+  req: TypedRequest<CreateTodoInput>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  // req.body é totalmente tipado!
+  const { title, description, isDone, reminder } = req.body;
+
+  const todo = await prisma.todo.create({
+    data: { title, description, isDone, reminder: reminder ? new Date(reminder) : null }
+  });
+
+  res.status(201).json(todo);
+};
+```
+
+### Validação Type-Safe
+
+```typescript
+// Middleware de validação com tipos genéricos
+router.post(
+  '/',
+  validate(createTodoSchema),  // Valida e transforma os dados
+  todoController.create        // Recebe dados já validados e tipados
+);
 ```
 
 ## 📦 Modelo de Dados

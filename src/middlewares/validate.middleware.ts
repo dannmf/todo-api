@@ -1,5 +1,10 @@
-export const validate = (schema, source = 'body') => {
-  return async (req, res, next) => {
+import type { Request, Response, NextFunction } from 'express';
+import type { AnyZodObject, ZodError } from 'zod';
+
+type ValidationSource = 'body' | 'params' | 'query';
+
+export const validate = (schema: AnyZodObject, source: ValidationSource = 'body') => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const data = source === 'params' ? req.params :
                    source === 'query' ? req.query :
@@ -17,15 +22,19 @@ export const validate = (schema, source = 'body') => {
 
       next();
     } catch (error) {
-      if (error.name === 'ZodError') {
-        return res.status(400).json({
+      const zodError = error as ZodError;
+
+      if (zodError.name === 'ZodError') {
+        res.status(400).json({
           error: 'Erro de validação',
-          details: error.errors.map(err => ({
+          details: zodError.errors.map(err => ({
             field: err.path.join('.'),
             message: err.message,
           })),
         });
+        return;
       }
+
       next(error);
     }
   };

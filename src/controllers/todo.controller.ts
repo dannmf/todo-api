@@ -1,12 +1,37 @@
+import type { Response, NextFunction } from 'express';
+import type { AsyncRequestHandler } from '../types/index.js';
+import type {
+  CreateTodoInput,
+  UpdateTodoInput,
+  TodoIdParams,
+  ListTodosQuery,
+} from '../validators/todo.validator.js';
 import prisma from '../config/database.js';
+
+// Tipos estendidos do Request com body/params/query tipados
+interface TypedRequest<TBody = unknown, TParams = unknown, TQuery = unknown> {
+  body: TBody;
+  params: TParams;
+  query: TQuery;
+}
 
 export class TodoController {
   // Listar todos os todos
-  async list(req, res, next) {
+  list: AsyncRequestHandler = async (
+    req: TypedRequest<unknown, unknown, ListTodosQuery>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { isDone, search } = req.query;
 
-      const where = {};
+      const where: {
+        isDone?: boolean;
+        OR?: Array<{
+          title?: { contains: string; mode: 'insensitive' };
+          description?: { contains: string; mode: 'insensitive' };
+        }>;
+      } = {};
 
       if (isDone !== undefined) {
         where.isDone = isDone;
@@ -31,10 +56,14 @@ export class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   // Buscar um todo por ID
-  async getById(req, res, next) {
+  getById: AsyncRequestHandler = async (
+    req: TypedRequest<unknown, TodoIdParams>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.params;
 
@@ -43,20 +72,25 @@ export class TodoController {
       });
 
       if (!todo) {
-        return res.status(404).json({
+        res.status(404).json({
           error: 'Não encontrado',
           message: 'Todo não encontrado',
         });
+        return;
       }
 
       res.json(todo);
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   // Criar um novo todo
-  async create(req, res, next) {
+  create: AsyncRequestHandler = async (
+    req: TypedRequest<CreateTodoInput>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { title, description, isDone, reminder } = req.body;
 
@@ -73,10 +107,14 @@ export class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   // Atualizar um todo
-  async update(req, res, next) {
+  update: AsyncRequestHandler = async (
+    req: TypedRequest<UpdateTodoInput, TodoIdParams>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.params;
       const { title, description, isDone, reminder } = req.body;
@@ -87,14 +125,21 @@ export class TodoController {
       });
 
       if (!existingTodo) {
-        return res.status(404).json({
+        res.status(404).json({
           error: 'Não encontrado',
           message: 'Todo não encontrado',
         });
+        return;
       }
 
       // Atualiza apenas os campos fornecidos
-      const updateData = {};
+      const updateData: {
+        title?: string;
+        description?: string | null;
+        isDone?: boolean;
+        reminder?: Date | null;
+      } = {};
+
       if (title !== undefined) updateData.title = title;
       if (description !== undefined) updateData.description = description;
       if (isDone !== undefined) updateData.isDone = isDone;
@@ -109,10 +154,14 @@ export class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   // Deletar um todo
-  async delete(req, res, next) {
+  delete: AsyncRequestHandler = async (
+    req: TypedRequest<unknown, TodoIdParams>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.params;
 
@@ -122,10 +171,11 @@ export class TodoController {
       });
 
       if (!existingTodo) {
-        return res.status(404).json({
+        res.status(404).json({
           error: 'Não encontrado',
           message: 'Todo não encontrado',
         });
+        return;
       }
 
       await prisma.todo.delete({
@@ -136,10 +186,14 @@ export class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   // Marcar/desmarcar como concluído
-  async toggleDone(req, res, next) {
+  toggleDone: AsyncRequestHandler = async (
+    req: TypedRequest<unknown, TodoIdParams>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.params;
 
@@ -148,10 +202,11 @@ export class TodoController {
       });
 
       if (!existingTodo) {
-        return res.status(404).json({
+        res.status(404).json({
           error: 'Não encontrado',
           message: 'Todo não encontrado',
         });
+        return;
       }
 
       const todo = await prisma.todo.update({
@@ -163,5 +218,5 @@ export class TodoController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 }

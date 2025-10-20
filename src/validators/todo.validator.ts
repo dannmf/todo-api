@@ -26,3 +26,13 @@ export const listTodosQuerySchema = z.object({
   isDone: z.enum(['true', 'false']).transform(val => val === 'true').optional(),
   search: z.string().optional(),
 });
+
+// Inferência de tipos TypeScript a partir dos schemas Zod
+export type CreateTodoInput = z.infer<typeof createTodoSchema>;
+export type UpdateTodoInput = z.infer<typeof updateTodoSchema>;
+export type TodoIdParams = z.infer<typeof todoIdSchema>;
+export type ListTodosQuery = z.infer<typeof listTodosQuerySchema>;
+
+// Tipos úteis para o corpo das requisições antes da transformação
+export type CreateTodoBody = z.input<typeof createTodoSchema>;
+export type UpdateTodoBody = z.input<typeof updateTodoSchema>;

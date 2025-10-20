@@ -15,21 +15,21 @@ const todoController = new TodoController();
 router.get(
   '/',
   validate(listTodosQuerySchema, 'query'),
-  todoController.list.bind(todoController)
+  todoController.list
 );
 
 // Buscar um todo por ID
 router.get(
   '/:id',
   validate(todoIdSchema, 'params'),
-  todoController.getById.bind(todoController)
+  todoController.getById
 );
 
 // Criar um novo todo
 router.post(
   '/',
   validate(createTodoSchema),
-  todoController.create.bind(todoController)
+  todoController.create
 );
 
 // Atualizar um todo
@@ -37,21 +37,21 @@ router.put(
   '/:id',
   validate(todoIdSchema, 'params'),
   validate(updateTodoSchema),
-  todoController.update.bind(todoController)
+  todoController.update
 );
 
 // Deletar um todo
 router.delete(
   '/:id',
   validate(todoIdSchema, 'params'),
-  todoController.delete.bind(todoController)
+  todoController.delete
 );
 
 // Marcar/desmarcar como concluído
 router.patch(
   '/:id/toggle',
   validate(todoIdSchema, 'params'),
-  todoController.toggleDone.bind(todoController)
+  todoController.toggleDone
 );
 
 export default router;

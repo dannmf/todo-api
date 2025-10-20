@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import cors from 'cors';
 import routes from './routes/index.js';
 import { errorHandler, notFoundHandler } from './middlewares/error.middleware.js';
@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Logging de requisições
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next();
 });
@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 app.use('/api', routes);
 
 // Rota raiz
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.json({
     message: 'Todo API',
     version: '1.0.0',
