@@ -1,0 +1,82 @@
+### Variables
+@baseUrl = http://localhost:3000/api
+@todoId = 1
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Listar todos os Todos
+GET {{baseUrl}}/todos
+
+### Listar Todos não concluídos
+GET {{baseUrl}}/todos?isDone=false
+
+### Listar Todos concluídos
+GET {{baseUrl}}/todos?isDone=true
+
+### Buscar Todos por texto
+GET {{baseUrl}}/todos?search=comprar
+
+### Buscar Todo por ID
+GET {{baseUrl}}/todos/{{todoId}}
+
+### Criar novo Todo
+POST {{baseUrl}}/todos
+Content-Type: application/json
+
+{
+  "title": "Comprar leite",
+  "description": "Ir ao supermercado depois do trabalho",
+  "isDone": false,
+  "reminder": "2024-01-20T15:00:00.000Z"
+}
+
+### Criar Todo simples (apenas título)
+POST {{baseUrl}}/todos
+Content-Type: application/json
+
+{
+  "title": "Estudar Node.js"
+}
+
+### Atualizar Todo completo
+PUT {{baseUrl}}/todos/{{todoId}}
+Content-Type: application/json
+
+{
+  "title": "Comprar leite e pão",
+  "description": "Ir ao supermercado depois do trabalho",
+  "isDone": true,
+  "reminder": "2024-01-20T18:00:00.000Z"
+}
+
+### Atualizar apenas o status
+PUT {{baseUrl}}/todos/{{todoId}}
+Content-Type: application/json
+
+{
+  "isDone": true
+}
+
+### Alternar status do Todo
+PATCH {{baseUrl}}/todos/{{todoId}}/toggle
+
+### Deletar Todo
+DELETE {{baseUrl}}/todos/{{todoId}}
+
+### Teste de validação - título vazio
+POST {{baseUrl}}/todos
+Content-Type: application/json
+
+{
+  "title": ""
+}
+
+### Teste de validação - reminder inválido
+POST {{baseUrl}}/todos
+Content-Type: application/json
+
+{
+  "title": "Teste",
+  "reminder": "data-invalida"
+}
