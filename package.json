@@ -2,60 +2,43 @@
   "name": "todo-api",
   "version": "1.0.0",
   "description": "API de Todo List com Node.js, Express, Prisma e Zod",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "type": "module",
   "scripts": {
-<<<<<<< HEAD
-    "dev": "nodemon src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix",
-    "type-check": "tsc --noEmit"
-=======
-    "dev": "node --watch src/server.js",
-    "start": "node src/server.js",
+    "type-check": "tsc --noEmit",
+    "lint": "tsc --noEmit",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:studio": "npx prisma studio",
     "prisma:generate": "npx prisma generate"
->>>>>>> 3f2fee66bb3c7d526a190026dd3a32ffe0141fc3
   },
-  "keywords": ["todo", "api", "express", "prisma", "zod"],
+  "keywords": [
+    "todo",
+    "api",
+    "express",
+    "prisma",
+    "zod",
+    "typescript"
+  ],
   "author": "",
   "license": "ISC",
-<<<<<<< HEAD
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dannmf/todo-api.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dannmf/todo-api/issues"
-  },
-  "homepage": "https://github.com/dannmf/todo-api#readme",
   "dependencies": {
-    "@prisma/client": "^6.16.2",
+    "@prisma/client": "^5.20.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "helmet": "^8.1.0",
-    "zod": "^4.1.11"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
-    "@types/node": "^24.5.2",
-    "prisma": "^6.16.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
-=======
-  "dependencies": {
-    "@prisma/client": "^5.20.0",
-    "express": "^4.19.2",
-    "zod": "^3.23.8",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5"
-  },
-  "devDependencies": {
-    "prisma": "^5.20.0"
->>>>>>> 3f2fee66bb3c7d526a190026dd3a32ffe0141fc3
+    "@types/helmet": "^0.0.48",
+    "@types/node": "^24.9.1",
+    "prisma": "^5.20.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }

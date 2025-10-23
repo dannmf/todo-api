@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-node_modules/
-dist/
-.env
-*.log
-.DS_Store
-/src/generated/prisma
-*.db
-*.db-journal
-/prisma/migrations/*/migration.sql
-=======
 node_modules
 .env
 dist
@@ -17,4 +6,3 @@ dist
 .vscode
 prisma/dev.db
 prisma/dev.db-journal
->>>>>>> 3f2fee66bb3c7d526a190026dd3a32ffe0141fc3

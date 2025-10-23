@@ -3,10 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-<<<<<<< HEAD
-  output   = "../src/generated/prisma"
-=======
->>>>>>> 3f2fee66bb3c7d526a190026dd3a32ffe0141fc3
 }
 
 datasource db {
@@ -15,17 +11,6 @@ datasource db {
 }
 
 model Todo {
-<<<<<<< HEAD
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  isCompleted Boolean   @default(false)
-  reminder    DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@map("todos")
-=======
   id          Int       @id @default(autoincrement())
   title       String
   description String?
@@ -33,5 +18,4 @@ model Todo {
   reminder    DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
->>>>>>> 3f2fee66bb3c7d526a190026dd3a32ffe0141fc3
 }
