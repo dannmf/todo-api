@@ -2,7 +2,7 @@
 
 API RESTful para gerenciamento de tarefas (Todo List) construída com Node.js, Express, Prisma e Zod.
 
-Esse projeto foi feito com o intuito de testar o Code Agent Claude, ele foi feito através do https://claude.ai/code/
+Esse projeto foi feito com o intuito de testar o Code Agent Claude
 
 ## 📋 Tecnologias
 
