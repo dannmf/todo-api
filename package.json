@@ -1,19 +1,29 @@
 {
   "name": "todo-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API de Todo List com Node.js, Express, Prisma e Zod",
+  "main": "src/server.js",
+  "type": "module",
   "scripts": {
+<<<<<<< HEAD
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "type-check": "tsc --noEmit"
+=======
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:studio": "npx prisma studio",
+    "prisma:generate": "npx prisma generate"
+>>>>>>> 3f2fee66bb3c7d526a190026dd3a32ffe0141fc3
   },
-  "keywords": [],
+  "keywords": ["todo", "api", "express", "prisma", "zod"],
   "author": "",
   "license": "ISC",
+<<<<<<< HEAD
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dannmf/todo-api.git"
@@ -36,5 +46,16 @@
     "prisma": "^6.16.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
+=======
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "express": "^4.19.2",
+    "zod": "^3.23.8",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "prisma": "^5.20.0"
+>>>>>>> 3f2fee66bb3c7d526a190026dd3a32ffe0141fc3
   }
 }
